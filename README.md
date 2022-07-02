@@ -1,4 +1,4 @@
-# Get started With Django
+# Getting started With Django
 
 ## 장고 설치
 ```shell
