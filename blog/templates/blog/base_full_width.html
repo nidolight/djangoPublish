@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ko">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>{% block head_title %}Blog{% endblock %}</title>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="{% static 'blog/bootstrap/bootstrap.min.css' %}" media="screen">
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'blog/css/blog-home.css' %}" rel="stylesheet" media="screen">
+
+</head>
+
+<body>
+
+  {% include 'blog/navbar.html' %}
+
+  <!-- Page Content -->
+  <div class="container">
+
+    <div class="row">
+      <div class="col=12" id="main-area">
+        {% block main_area %}
+        {% endblock %}
+      </div>
+    </div>
+    <!-- /.row -->
+
+  </div>
+  <!-- /.container -->
+
+  {% include 'blog/footer.html' %}
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

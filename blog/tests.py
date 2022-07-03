@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from django.contrib.auth.models import User
 from .models import Post, Category, Tag
 
+
 class TestView(TestCase):
     def setUp(self):
         self.client = Client() # Client는 장고에서 테스트를 위한 가상의 사용자
@@ -113,7 +114,6 @@ class TestView(TestCase):
         main_area = soup.find('div', id='main-area')
         self.assertIn('아직 게시물이 없습니다', main_area.text)
 
-
     def test_post_detail(self):
         # # 1.1 포스트가 하나 있다.
         # post_001 = Post.objects.create(
@@ -161,7 +161,6 @@ class TestView(TestCase):
         self.assertNotIn(self.tag_python.name, post_area.text)
         self.assertNotIn(self.tag_python_kor.name, post_area.text)
 
-
     def test_category_page(self):
         response = self.client.get(self.category_programming.get_absolute_url())
         self.assertEqual(response.status_code, 200)
@@ -178,7 +177,6 @@ class TestView(TestCase):
         self.assertNotIn(self.post_002.title, main_area.text)
         self.assertNotIn(self.post_003.title, main_area.text)
 
-
     def test_tag_page(self):
         response = self.client.get(self.tag_hello.get_absolute_url())
         self.assertEqual(response.status_code, 200)
@@ -194,6 +192,34 @@ class TestView(TestCase):
         self.assertIn(self.post_001.title, main_area.text)
         self.assertNotIn(self.post_002.title, main_area.text)
         self.assertNotIn(self.post_003.title, main_area.text)
+
+    def test_create_post(self):
+        #로그인하지 않으면 status code 가 200이면 안됨
+        response = self.client.get('/blog/create_post/')
+        self.assertNotEqual(response.status_code, 200)
+
+        #로그인을 한다.
+        self.client.login(username='trump', password='somepassword')
+
+        response = self.client.get('/blog/create_post/')
+        self.assertEqual(response.status_code, 200)
+        soup = BeautifulSoup(response.content, 'html.parser')
+        self.assertEqual('Create Post - Blog', soup.title.text)
+
+        main_area = soup.find('div', id='main-area')
+        self.assertIn('Create New Post', main_area.text)
+
+        self.client.post(
+            '/blog/create_post/',
+            {
+                'title': "Post Form 만들기",
+                'content': "Post Form 페이지 생성!",
+            }
+        )
+        self.assertEqual(Post.objects.count(), 4)
+        last_post = Post.objects.last()
+        self.assertEqual(last_post.title, "Post Form 만들기")
+        self.assertEqual(last_post.author.username, 'trump')
 
 
     # def test_post_list(self):
