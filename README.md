@@ -40,6 +40,7 @@ HTML 은 기본적으로 정적인 언어이다.(작성 후 동적으로 무언�
 ## Bootstrap
 ### What is Bootstrap
 - 웹 개발 시 일반적으로 쓰이는 구성 요소들을 미리 디자인 해둔 툴킷
+- Official Document : [link](https://getbootstrap.com/docs/5.2/getting-started/introduction/)
 
 ### 일반적인 css의 적용 과정
 1. 웹 브라우저(클라이언트)는 서버에 접속해 html 파일을 불러온다.

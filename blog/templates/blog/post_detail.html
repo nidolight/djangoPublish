@@ -6,10 +6,10 @@
 
 {% block main_area %}
     <div id="post-area">
-         {% if post.category %}
-          <span class="badge badge-secondary float-right">{{ post.category }}</span>
+        {% if post.category %}
+          <span class="badge bg-secondary rounded-pill float-end">{{ post.category }}</span>
         {% else %}
-          <span class="badge badge-secondary float-right">미분류</span>
+          <span class="badge bg-secondary rounded-pill float-end">미분류</span>
         {% endif %}
 
         <!-- Title -->

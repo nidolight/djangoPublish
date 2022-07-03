@@ -1,7 +1,7 @@
 {% extends 'blog/base.html' %}
 
 {% block main_area %}
-    <h1 class="my-4">Blog
+    <h1 class="my-4">Blog {% if category %}<span class ="badge rounded-pill text-bg-secondary">{{ category }}</span>{% endif %}
       <small>Secondary Text</small>
     </h1>
     {% if post_list.exists %}
@@ -15,9 +15,9 @@
           {% endif %}
           <div class="card-body">
             {% if p.category %}
-              <span class="badge badge-secondary float-right">{{ p.category }}</span>
+              div<span class="badge bg-secondary rounded-pill float-end">{{ p.category }}</span>
             {% else %}
-              <span class="badge badge-secondary float-right">미분류</span>
+              <span class="badge bg-secondary rounded-pill float-end">미분류</span>
             {% endif %}
             <h2 class="card-title">{{ p.title }}</h2>
             {% if p.hook_text %}
