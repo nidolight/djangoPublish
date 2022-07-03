@@ -6,7 +6,7 @@ $ pip install django
 ```
 가상환경(venv)에서 장고 설치
 
----
+
 ## 장고로 만든 웹사이트의 작동 구조
 장고 프레임워크에서는 `MVT 패턴`을 따른다.
 
@@ -18,7 +18,7 @@ $ pip install django
 
 이러한 작동구조는 [MVT 패턴](https://butter-shower.tistory.com/49)이라고 부르며 [MVC 패턴](https://velog.io/@seongwon97/MVC-%ED%8C%A8%ED%84%B4%EC%9D%B4%EB%9E%80)과 유사하다.
 
----
+
 ## Views를 처리하는 방법
 
 장고는 원래 `함수형 뷰(FBV)`만 사용하였는데,
@@ -29,7 +29,7 @@ $ pip install django
 >The Newer is often better, not always.
 
 
----
+
 ## 장고의 tamplate 기능
 HTML 은 기본적으로 정적인 언어이다.(작성 후 동적으로 무언가를 변경/수정 불가)<br>
 `{% %}` , `{{ }}` 와 같은 구문을 통해 HTML 내에 동적인 구문을 삽입할 수 있다.<br>
@@ -39,7 +39,7 @@ HTML 은 기본적으로 정적인 언어이다.(작성 후 동적으로 무언�
  - {% %} 와 같은 구문은 if, for 등 임의의 로직을 실행하기 위해 쓰이는 태그
 
 
----
+
 ## Bootstrap
 ### What is Bootstrap
 - 웹 개발 시 일반적으로 쓰이는 구성 요소들을 미리 디자인 해둔 툴킷
@@ -59,7 +59,7 @@ templates 폴더의 html 파일은 정적인 파일이 아니므로 templates �
 > css,js파일은 templates 폴더의 html 파일과 달리 고정된 내용만 제공하면 된다.<br>
 > 따라서, 특정 URL로 접근을 하면 해당 css,js파일을 제공할 수 있도록 설정해 두면 된다.
 
-static 폴더를 만들어 css,js와 같은 정적 파일을 저장
+→ static 폴더를 만들어 css,js와 같은 정적 파일을 저장
 
----
+
 
