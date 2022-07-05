@@ -61,3 +61,4 @@ class Post(models.Model):
 
     def get_content_markdown(self):
         return markdown(self.content)
+
