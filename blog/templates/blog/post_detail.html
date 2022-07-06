@@ -115,7 +115,7 @@
           {% for comment in post.comment_set.iterator %}
             <!-- Single Comment -->
             <div class="d-flex media mb-4 gap-3 col-12" id="comment-{{ comment.pk }}">
-              <img class="rounded-circle" src="http://via.placeholder.com/50x50" alt="" width="60px" height="60px">
+              <img class="rounded-circle" src="{{ comment.get_avatar_url }}" alt="{{ comment.author }}" width="60px" height="60px">
               <div class="media-body col-10">
                 {% if user.is_authenticated and comment.author == user %}
                 <div class="float-end">
