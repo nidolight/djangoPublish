@@ -6,6 +6,7 @@ from .models import Post, Category, Tag, Comment
 from .forms import CommentForm
 from django.core.exceptions import PermissionDenied
 from django.utils.text import slugify
+from django.db.models import Q
 
 
 class PostList(ListView):
@@ -30,6 +31,28 @@ class PostDetail(DetailView):
         context['no_category_post_count'] = Post.objects.filter(category=None).count()
         context['comment_form'] = CommentForm
         return context
+
+# def index(request):
+#     posts = Post.objects.all().order_by('-pk')
+#
+#     return render(
+#         request,
+#         'blog/post_list.html',
+#         {
+#             'posts': posts,
+#         }
+#     )
+#
+# def single_post_page(request, pk):
+#     post = Post.objects.get(pk=pk)
+#
+#     return render(
+#         request,
+#         'blog/post_detail.html',
+#         {
+#             'post': post,
+#         }
+#     )
 
 
 class PostCreate(LoginRequiredMixin, CreateView):
@@ -122,6 +145,23 @@ class CommentUpdate(LoginRequiredMixin, UpdateView):
             raise PermissionDenied
 
 
+class PostSearch(PostList):
+    paginate_by = None
+
+    def get_queryset(self):
+        q = self.kwargs['q']
+        post_list = Post.objects.filter(
+            Q(title__contains=q) | Q(tags__name__contains=q)
+        ).distinct()
+        return post_list
+
+    def get_context_data(self, **kwargs):
+        context = super(PostSearch, self).get_context_data()
+        q = self.kwargs['q']
+        context['search_info'] = f'Search: {q} ({self.get_queryset().count()})'
+        return context
+
+
 def category_page(request, slug):
     if slug == 'no_category':
         category = '미분류'
@@ -185,26 +225,4 @@ def delete_comment(request, pk):
     else:
         raise PermissionDenied
 
-
-# def index(request):
-#     posts = Post.objects.all().order_by('-pk')
-#
-#     return render(
-#         request,
-#         'blog/post_list.html',
-#         {
-#             'posts': posts,
-#         }
-#     )
-#
-# def single_post_page(request, pk):
-#     post = Post.objects.get(pk=pk)
-#
-#     return render(
-#         request,
-#         'blog/post_detail.html',
-#         {
-#             'post': post,
-#         }
-#     )
 
