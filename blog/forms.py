@@ -7,4 +7,3 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ('content',)
         # exclude = ('post', 'author', 'created_at', 'modified_at',)
-
