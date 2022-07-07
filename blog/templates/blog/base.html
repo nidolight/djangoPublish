@@ -44,20 +44,20 @@
     <div class="row">
 
       <!-- Blog Entries Column -->
-      <div class="col-md-8" id="main-area">
+      <div class="col-md-9" id="main-area">
         {% block main_area %}
         {% endblock %}
       </div>
 
       <!-- Sidebar Widgets Column -->
-      <div class="col-md-4">
+      <div class="col-md-3">
 
         <!-- Search Widget -->
         <div class="card my-4">
           <h5 class="card-header">Search</h5>
           <div class="card-body">
             <div class="input-group gap-2">
-              <input type="text" class="form-control" placeholder="Search for..." id="search-input">
+              <input type="text" class="form-control" placeholder="Search for..." id="search-input" style="font-size:10pt;">
               <span class="input-group-append">
                 <button class="btn btn-secondary" type="button" onclick="searchPost();">Go!</button>
               </span>
