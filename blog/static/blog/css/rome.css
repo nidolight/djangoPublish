@@ -8,9 +8,8 @@
   display: none;
   /*border: 1px solid #333;*/
   background-color: #fff;
-  padding: 10px;
+  padding: 25px;
   text-align: center;
-
 
 }
 .rd-container-attachment {
@@ -67,7 +66,7 @@
   background-color: #adadad;
   color: #fff;
   /* new */
-  border-radius: 50%;
+  border-radius: 15px;
 }
 .rd-day-prev-month,
 .rd-day-next-month {
