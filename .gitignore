@@ -165,4 +165,7 @@ cython_debug/
 migrations/
 _media/
 
+.env.prod
+.env.prod.db
+
 # End of https://www.toptal.com/developers/gitignore/api/python
