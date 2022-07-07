@@ -19,6 +19,13 @@
   <link href="{% static 'blog/css/blog-home.css' %}" rel="stylesheet" media="screen">
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{% static 'blog/css/rome.css' %}">
+  <link rel="stylesheet" href="{% static 'blog/css/style.css' %}">
+
 </head>
 
 <script>
@@ -44,13 +51,13 @@
     <div class="row">
 
       <!-- Blog Entries Column -->
-      <div class="col-md-9" id="main-area">
+      <div class="col-md-8" id="main-area">
         {% block main_area %}
         {% endblock %}
       </div>
 
       <!-- Sidebar Widgets Column -->
-      <div class="col-md-3">
+      <div class="col-md-4">
 
         <!-- Search Widget -->
         <div class="card my-4">
@@ -73,11 +80,11 @@
                 <ul class="list-group list-group-flush">
                   {% for category in categories %}
                   <li class="list-group-item">
-                    <a href="{{ category.get_absolute_url }}">{{ category }} ({{ category.post_set.count }})</a>
+                    &nbsp&nbsp<a href="{{ category.get_absolute_url }}">{{ category }} ({{ category.post_set.count }})</a>
                   </li>
                   {% endfor %}
                   <li class="list-group-item">
-                    <a href="/blog/category/no_category/">미분류 ({{ no_category_post_count }})</a>
+                    &nbsp&nbsp<a href="/blog/category/no_category/">미분류 ({{ no_category_post_count }})</a>
                   </li>
                 </ul>
             </div>
@@ -85,7 +92,9 @@
         </div>
 
         <!-- Side Widget -->
-        <div class="card my-4">
+        <div class="card my-4 text-center">
+
+          {% include 'blog/calendar.html' %}
 
         </div>
 
