@@ -16,6 +16,9 @@ class Category(models.Model):
     def get_absolute_url(self):
         return f'/blog/category/{self.slug}/'
 
+    def get_slug(self):
+        return f'{self.slug}'
+
     class Meta:
         verbose_name_plural = 'Categories' #이름 수정
 
