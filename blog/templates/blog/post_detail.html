@@ -94,12 +94,15 @@
           <h5 class="card-header">Leave a Comment:</h5>
           <div class="card-body">
             {% if user.is_authenticated %}
-            <form id="comment-form" method="POST" action="{{ post.get_absolute_url }}new_comment/">
+            <style>
+                label.form-label{ display: none; }
+                #id_content { height: 5em; }
+            </style>
+            <form id="comment-form" method="POST" action="{{ post.get_absolute_url }}new_comment/" style="textarea.rows:3;">
               {% csrf_token %}
               <div class="form-group">
-                  {{ comment_form | crispy }}
+                  {{ comment_form | crispy  }}
               </div>
-                <br/>
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>
             {% else %}
