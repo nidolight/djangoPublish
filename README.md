@@ -123,5 +123,10 @@ TestCase를 이용한 테스트 방식은 실제 데이터베이스를 건들지
 웹 서버 소프트웨어를 사용하면 방문자의 요청에 더 빠르게 응답할 수 있고, 많은 사용자가 동시에 접속했을 때 여러 대의 서버로 요청을 분산하는 `laad balancing` 같은 기능도 제공할 수 있다.
 또한 장고가 꼭 필요한 요청에 대해서만 장고를 이용해 컴퓨팅 자원을 효율적으로 쓸 수도 있다.
 - Gunicorn: 웹 서버 소프트웨어와 장고를 연결하기 위해 필요한 [WSGI](https://my-repo.tistory.com/20) 중 하나
-- Nginx:  오픈 소스 웹 서버 소프트웨어
+- Nginx: 오픈 소스 웹 서버 소프트웨어
 
+## HTTPS 인증
+HTTPS = HyperText Transfer Protocol + Secure socket layer<br>
+SSL은 클라이언트와 서버가 통신할 때 제3자가 인증을 하고 그 인증서 정보를 이용해 둘 간의 통신을 암호화하여 주고받는 방식<br>
+- letsencrypt: 인증서를 무료로 제공해주는 인증기관
+- Certbot: letsencrypt의 인증서 발급 및 갱신 과정을 간편하게 해준다.
