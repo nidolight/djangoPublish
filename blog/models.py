@@ -3,8 +3,7 @@ import os
 from django.db import models
 from django.contrib.auth.models import User
 from markdownx.models import MarkdownxField
-from markdownx.utils import markdown
-
+from markdownx.utils import markdownify
 
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -63,7 +62,7 @@ class Post(models.Model):
         return self.get_file_name().split('.')[-1]
 
     def get_content_markdown(self):
-        return markdown(self.content)
+        return markdownify(self.content)
 
 
 class Comment(models.Model):
