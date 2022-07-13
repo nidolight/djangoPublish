@@ -1,0 +1,13 @@
+body {
+    padding-top: 56px;
+    background: url('/static/single_pages/images/wood-gray-wallpaper.jpg') no-repeat
+center center fixed;
+    -webkit-backgroud-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
+section {
+    margin-bottom: 150px;
+}
