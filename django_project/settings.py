@@ -166,7 +166,7 @@ MARKDOWNX_MARKDOWN_EXTENSIONS = [
 
 MARKDOWNX_MARKDOWN_EXTENSION_CONFIGS = {
     'markdown.extensions.codehilite': {
-        'linenums': True,
+        'linenums': False,
         'use_pygments': True,
         'noclasses': True,
         'pygments_style': 'tango',
