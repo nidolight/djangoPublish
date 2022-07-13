@@ -2,174 +2,191 @@
 {% load crispy_forms_tags %}
 
 {% block head_title %}
-  {{ post.title }} - Blog
+{{ post.title }} - Blog
 {% endblock %}
 
 {% block main_area %}
-    <div id="post-area">
-        {% if post.category %}
-          <span class="badge bg-secondary rounded-pill float-end">{{ post.category }}</span>
-        {% else %}
-          <span class="badge bg-secondary rounded-pill float-end">미분류</span>
-        {% endif %}
+<div id="post-area">
+  {% if post.category %}
+  <span class="badge bg-secondary rounded-pill float-end">{{ post.category }}</span>
+  {% else %}
+  <span class="badge bg-secondary rounded-pill float-end">미분류</span>
+  {% endif %}
 
-        <!-- Title -->
-        <h1 class="mt-4">{{ post.title }}</h1>
-        <h5 class="text-muted">{{ post.hook_text }}</h5>
+  <!-- Title -->
+  <h1 class="mt-4">{{ post.title }}</h1>
+  <h5 class="text-muted">{{ post.hook_text }}</h5>
 
-        <!-- Author -->
-        <p class="lead">
-          by
-          <a href="#">{{ post.author | upper }}</a>
-        </p>
+  <!-- Author -->
+  <p class="lead">
+    by
+    <a href="#">{{ post.author | upper }}</a>
+  </p>
 
-        <hr>
+  <hr>
 
-        {% if user.is_authenticated and user == post.author %}
-          <a class="btn btn-outline-info btn-sm float-end" href="/blog/update_post/{{ post.pk }}/" role="button">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
-                  <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
-              </svg> Edit Post
-          </a>
-        {% endif %}
+  {% if user.is_authenticated and user == post.author %}
+  <a class="btn btn-outline-info btn-sm float-end" href="/blog/update_post/{{ post.pk }}/" role="button">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen"
+      viewBox="0 0 16 16">
+      <path
+        d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
+    </svg> Edit Post
+  </a>
+  {% endif %}
 
-        <!-- Date/Time -->
-        <p>Posted on {{ post.created_at }}</p>
+  <!-- Date/Time -->
+  <p>Posted on {{ post.created_at }}</p>
 
-        <hr>
+  <hr>
 
-        <!-- Preview Image -->
-        {% if post.head_image %}
-        <img class="img-fluid rounded" src="{{ post.head_image.url }}" alt="{{ post.title }} head image">
-        {% else %}
-        <img class="img-fluid rounded" src="https://picsum.photos/seed/{{ post.id }}/800/200" alt="random image">
-        {% endif %}
+  <!-- Preview Image -->
+  <div style="text-align:center;">
+    {% if post.head_image %}
+    <img class="img-fluid rounded" src="{{ post.head_image.url }}" alt="{{ post.title }} head image">
+    {% else %}
+    <img class="img-fluid rounded" src="https://picsum.photos/seed/{{ post.id }}/800/200" alt="random image">
+    {% endif %}
+  </div>
+  <hr>
 
-        <hr>
+  <!-- Post Content -->
+  <p>{{ post.get_content_markdown | safe }}</p>
+  {% if post.tags.exists %}
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tags"
+    viewBox="0 0 16 16">
+    <path
+      d="M3 2v4.586l7 7L14.586 9l-7-7H3zM2 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 2 6.586V2z" />
+    <path
+      d="M5.5 5a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm0 1a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM1 7.086a1 1 0 0 0 .293.707L8.75 15.25l-.043.043a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 0 7.586V3a1 1 0 0 1 1-1v5.086z" />
+  </svg>
+  {% for tag in post.tags.iterator %}
+  <a href="{{ tag.get_absolute_url }}"><span class="badge text-bg-light">{{ tag }}</span></a>
+  {% endfor %}
+  <br />
+  <br />
+  {% endif %}
+  {% if post.file_upload %}
+  <a href="{{ post.file_upload.url }}" class="btn btn-outline-dark" role="button" download>
+    Download:
+    {% if post.get_file_ext == 'csv' %}
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filetype-csv"
+      viewBox="0 0 16 16">
+      <path fill-rule="evenodd"
+        d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5L14 4.5ZM3.517 14.841a1.13 1.13 0 0 0 .401.823c.13.108.289.192.478.252.19.061.411.091.665.091.338 0 .624-.053.859-.158.236-.105.416-.252.539-.44.125-.189.187-.408.187-.656 0-.224-.045-.41-.134-.56a1.001 1.001 0 0 0-.375-.357 2.027 2.027 0 0 0-.566-.21l-.621-.144a.97.97 0 0 1-.404-.176.37.37 0 0 1-.144-.299c0-.156.062-.284.185-.384.125-.101.296-.152.512-.152.143 0 .266.023.37.068a.624.624 0 0 1 .246.181.56.56 0 0 1 .12.258h.75a1.092 1.092 0 0 0-.2-.566 1.21 1.21 0 0 0-.5-.41 1.813 1.813 0 0 0-.78-.152c-.293 0-.551.05-.776.15-.225.099-.4.24-.527.421-.127.182-.19.395-.19.639 0 .201.04.376.122.524.082.149.2.27.352.367.152.095.332.167.539.213l.618.144c.207.049.361.113.463.193a.387.387 0 0 1 .152.326.505.505 0 0 1-.085.29.559.559 0 0 1-.255.193c-.111.047-.249.07-.413.07-.117 0-.223-.013-.32-.04a.838.838 0 0 1-.248-.115.578.578 0 0 1-.255-.384h-.765ZM.806 13.693c0-.248.034-.46.102-.633a.868.868 0 0 1 .302-.399.814.814 0 0 1 .475-.137c.15 0 .283.032.398.097a.7.7 0 0 1 .272.26.85.85 0 0 1 .12.381h.765v-.072a1.33 1.33 0 0 0-.466-.964 1.441 1.441 0 0 0-.489-.272 1.838 1.838 0 0 0-.606-.097c-.356 0-.66.074-.911.223-.25.148-.44.359-.572.632-.13.274-.196.6-.196.979v.498c0 .379.064.704.193.976.131.271.322.48.572.626.25.145.554.217.914.217.293 0 .554-.055.785-.164.23-.11.414-.26.55-.454a1.27 1.27 0 0 0 .226-.674v-.076h-.764a.799.799 0 0 1-.118.363.7.7 0 0 1-.272.25.874.874 0 0 1-.401.087.845.845 0 0 1-.478-.132.833.833 0 0 1-.299-.392 1.699 1.699 0 0 1-.102-.627v-.495Zm8.239 2.238h-.953l-1.338-3.999h.917l.896 3.138h.038l.888-3.138h.879l-1.327 4Z" />
+    </svg>
+    {% elif post.get_file_ext == 'xlsx' or post.get_file.ext == 'xls' %}
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filetype-xls"
+      viewBox="0 0 16 16">
+      <path fill-rule="evenodd"
+        d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5L14 4.5ZM6.472 15.29a1.176 1.176 0 0 1-.111-.449h.765a.578.578 0 0 0 .254.384c.07.049.154.087.25.114.095.028.202.041.319.041.164 0 .302-.023.413-.07a.559.559 0 0 0 .255-.193.507.507 0 0 0 .085-.29.387.387 0 0 0-.153-.326c-.101-.08-.255-.144-.462-.193l-.619-.143a1.72 1.72 0 0 1-.539-.214 1.001 1.001 0 0 1-.351-.367 1.068 1.068 0 0 1-.123-.524c0-.244.063-.457.19-.639.127-.181.303-.322.527-.422.225-.1.484-.149.777-.149.305 0 .564.05.78.152.216.102.383.239.5.41.12.17.186.359.2.566h-.75a.56.56 0 0 0-.12-.258.625.625 0 0 0-.247-.181.923.923 0 0 0-.369-.068c-.217 0-.388.05-.513.152a.472.472 0 0 0-.184.384c0 .121.048.22.143.3a.97.97 0 0 0 .405.175l.62.143c.217.05.406.12.566.211a1 1 0 0 1 .375.358c.09.148.135.335.135.56 0 .247-.063.466-.188.656a1.216 1.216 0 0 1-.539.439c-.234.105-.52.158-.858.158-.254 0-.476-.03-.665-.09a1.404 1.404 0 0 1-.478-.252 1.13 1.13 0 0 1-.29-.375Zm-2.945-3.358h-.893L1.81 13.37h-.036l-.832-1.438h-.93l1.227 1.983L0 15.931h.861l.853-1.415h.035l.85 1.415h.908L2.253 13.94l1.274-2.007Zm2.727 3.325H4.557v-3.325h-.79v4h2.487v-.675Z" />
+    </svg>
+    {% elif post.get_file_ext == 'docx' or post.get_file.ext == 'doc' %}
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filetype-doc"
+      viewBox="0 0 16 16">
+      <path fill-rule="evenodd"
+        d="M14 4.5V14a2 2 0 0 1-2 2v-1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5L14 4.5Zm-7.839 9.166v.522c0 .256-.039.47-.117.641a.861.861 0 0 1-.322.387.877.877 0 0 1-.469.126.883.883 0 0 1-.471-.126.868.868 0 0 1-.32-.386 1.55 1.55 0 0 1-.117-.642v-.522c0-.257.04-.471.117-.641a.868.868 0 0 1 .32-.387.868.868 0 0 1 .471-.129c.176 0 .332.043.469.13a.861.861 0 0 1 .322.386c.078.17.117.384.117.641Zm.803.519v-.513c0-.377-.068-.7-.205-.972a1.46 1.46 0 0 0-.589-.63c-.254-.147-.56-.22-.917-.22-.355 0-.662.073-.92.22a1.441 1.441 0 0 0-.589.627c-.136.271-.205.596-.205.975v.513c0 .375.069.7.205.973.137.271.333.48.59.627.257.144.564.216.92.216.357 0 .662-.072.916-.216.256-.147.452-.356.59-.627.136-.274.204-.598.204-.973ZM0 11.926v4h1.459c.402 0 .735-.08.999-.238a1.45 1.45 0 0 0 .595-.689c.13-.3.196-.662.196-1.084 0-.42-.065-.778-.196-1.075a1.426 1.426 0 0 0-.59-.68c-.263-.156-.598-.234-1.004-.234H0Zm.791.645h.563c.248 0 .45.05.609.152a.89.89 0 0 1 .354.454c.079.201.118.452.118.753a2.3 2.3 0 0 1-.068.592 1.141 1.141 0 0 1-.196.422.8.8 0 0 1-.334.252 1.298 1.298 0 0 1-.483.082H.79V12.57Zm7.422.483a1.732 1.732 0 0 0-.103.633v.495c0 .246.034.455.103.627a.834.834 0 0 0 .298.393.845.845 0 0 0 .478.131.868.868 0 0 0 .401-.088.699.699 0 0 0 .273-.248.8.8 0 0 0 .117-.364h.765v.076a1.268 1.268 0 0 1-.226.674c-.137.194-.32.345-.55.454a1.81 1.81 0 0 1-.786.164c-.36 0-.664-.072-.914-.216a1.424 1.424 0 0 1-.571-.627c-.13-.272-.194-.597-.194-.976v-.498c0-.379.066-.705.197-.978.13-.274.321-.485.571-.633.252-.149.556-.223.911-.223.219 0 .421.032.607.097.187.062.35.153.489.272a1.326 1.326 0 0 1 .466.964v.073H9.78a.85.85 0 0 0-.12-.38.7.7 0 0 0-.273-.261.802.802 0 0 0-.398-.097.814.814 0 0 0-.475.138.868.868 0 0 0-.301.398Z" />
+    </svg>
+    {% else %}
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark"
+      viewBox="0 0 16 16">
+      <path
+        d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z" />
+    </svg>
+    {% endif %}
+    {{ post.get_file_name }}
+  </a>
+  {% endif %}
 
-        <!-- Post Content -->
-        <p>{{ post.get_content_markdown | safe }}</p>
-        {% if post.tags.exists %}
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tags" viewBox="0 0 16 16">
-              <path d="M3 2v4.586l7 7L14.586 9l-7-7H3zM2 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 2 6.586V2z"/>
-              <path d="M5.5 5a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm0 1a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM1 7.086a1 1 0 0 0 .293.707L8.75 15.25l-.043.043a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 0 7.586V3a1 1 0 0 1 1-1v5.086z"/>
-            </svg>
-            {% for tag in post.tags.iterator %}
-              <a href="{{ tag.get_absolute_url }}"><span class="badge text-bg-light">{{ tag }}</span></a>
-            {% endfor %}
-            <br/>
-            <br/>
-        {% endif %}
-        {% if post.file_upload %}
-          <a href="{{ post.file_upload.url }}" class="btn btn-outline-dark" role="button" download>
-            Download:
-            {% if post.get_file_ext == 'csv' %}
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filetype-csv" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5L14 4.5ZM3.517 14.841a1.13 1.13 0 0 0 .401.823c.13.108.289.192.478.252.19.061.411.091.665.091.338 0 .624-.053.859-.158.236-.105.416-.252.539-.44.125-.189.187-.408.187-.656 0-.224-.045-.41-.134-.56a1.001 1.001 0 0 0-.375-.357 2.027 2.027 0 0 0-.566-.21l-.621-.144a.97.97 0 0 1-.404-.176.37.37 0 0 1-.144-.299c0-.156.062-.284.185-.384.125-.101.296-.152.512-.152.143 0 .266.023.37.068a.624.624 0 0 1 .246.181.56.56 0 0 1 .12.258h.75a1.092 1.092 0 0 0-.2-.566 1.21 1.21 0 0 0-.5-.41 1.813 1.813 0 0 0-.78-.152c-.293 0-.551.05-.776.15-.225.099-.4.24-.527.421-.127.182-.19.395-.19.639 0 .201.04.376.122.524.082.149.2.27.352.367.152.095.332.167.539.213l.618.144c.207.049.361.113.463.193a.387.387 0 0 1 .152.326.505.505 0 0 1-.085.29.559.559 0 0 1-.255.193c-.111.047-.249.07-.413.07-.117 0-.223-.013-.32-.04a.838.838 0 0 1-.248-.115.578.578 0 0 1-.255-.384h-.765ZM.806 13.693c0-.248.034-.46.102-.633a.868.868 0 0 1 .302-.399.814.814 0 0 1 .475-.137c.15 0 .283.032.398.097a.7.7 0 0 1 .272.26.85.85 0 0 1 .12.381h.765v-.072a1.33 1.33 0 0 0-.466-.964 1.441 1.441 0 0 0-.489-.272 1.838 1.838 0 0 0-.606-.097c-.356 0-.66.074-.911.223-.25.148-.44.359-.572.632-.13.274-.196.6-.196.979v.498c0 .379.064.704.193.976.131.271.322.48.572.626.25.145.554.217.914.217.293 0 .554-.055.785-.164.23-.11.414-.26.55-.454a1.27 1.27 0 0 0 .226-.674v-.076h-.764a.799.799 0 0 1-.118.363.7.7 0 0 1-.272.25.874.874 0 0 1-.401.087.845.845 0 0 1-.478-.132.833.833 0 0 1-.299-.392 1.699 1.699 0 0 1-.102-.627v-.495Zm8.239 2.238h-.953l-1.338-3.999h.917l.896 3.138h.038l.888-3.138h.879l-1.327 4Z"/>
-              </svg>
-            {% elif post.get_file_ext == 'xlsx' or post.get_file.ext == 'xls' %}
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filetype-xls" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5L14 4.5ZM6.472 15.29a1.176 1.176 0 0 1-.111-.449h.765a.578.578 0 0 0 .254.384c.07.049.154.087.25.114.095.028.202.041.319.041.164 0 .302-.023.413-.07a.559.559 0 0 0 .255-.193.507.507 0 0 0 .085-.29.387.387 0 0 0-.153-.326c-.101-.08-.255-.144-.462-.193l-.619-.143a1.72 1.72 0 0 1-.539-.214 1.001 1.001 0 0 1-.351-.367 1.068 1.068 0 0 1-.123-.524c0-.244.063-.457.19-.639.127-.181.303-.322.527-.422.225-.1.484-.149.777-.149.305 0 .564.05.78.152.216.102.383.239.5.41.12.17.186.359.2.566h-.75a.56.56 0 0 0-.12-.258.625.625 0 0 0-.247-.181.923.923 0 0 0-.369-.068c-.217 0-.388.05-.513.152a.472.472 0 0 0-.184.384c0 .121.048.22.143.3a.97.97 0 0 0 .405.175l.62.143c.217.05.406.12.566.211a1 1 0 0 1 .375.358c.09.148.135.335.135.56 0 .247-.063.466-.188.656a1.216 1.216 0 0 1-.539.439c-.234.105-.52.158-.858.158-.254 0-.476-.03-.665-.09a1.404 1.404 0 0 1-.478-.252 1.13 1.13 0 0 1-.29-.375Zm-2.945-3.358h-.893L1.81 13.37h-.036l-.832-1.438h-.93l1.227 1.983L0 15.931h.861l.853-1.415h.035l.85 1.415h.908L2.253 13.94l1.274-2.007Zm2.727 3.325H4.557v-3.325h-.79v4h2.487v-.675Z"/>
-              </svg>
-            {% elif post.get_file_ext == 'docx' or post.get_file.ext == 'doc' %}
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filetype-doc" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2v-1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5L14 4.5Zm-7.839 9.166v.522c0 .256-.039.47-.117.641a.861.861 0 0 1-.322.387.877.877 0 0 1-.469.126.883.883 0 0 1-.471-.126.868.868 0 0 1-.32-.386 1.55 1.55 0 0 1-.117-.642v-.522c0-.257.04-.471.117-.641a.868.868 0 0 1 .32-.387.868.868 0 0 1 .471-.129c.176 0 .332.043.469.13a.861.861 0 0 1 .322.386c.078.17.117.384.117.641Zm.803.519v-.513c0-.377-.068-.7-.205-.972a1.46 1.46 0 0 0-.589-.63c-.254-.147-.56-.22-.917-.22-.355 0-.662.073-.92.22a1.441 1.441 0 0 0-.589.627c-.136.271-.205.596-.205.975v.513c0 .375.069.7.205.973.137.271.333.48.59.627.257.144.564.216.92.216.357 0 .662-.072.916-.216.256-.147.452-.356.59-.627.136-.274.204-.598.204-.973ZM0 11.926v4h1.459c.402 0 .735-.08.999-.238a1.45 1.45 0 0 0 .595-.689c.13-.3.196-.662.196-1.084 0-.42-.065-.778-.196-1.075a1.426 1.426 0 0 0-.59-.68c-.263-.156-.598-.234-1.004-.234H0Zm.791.645h.563c.248 0 .45.05.609.152a.89.89 0 0 1 .354.454c.079.201.118.452.118.753a2.3 2.3 0 0 1-.068.592 1.141 1.141 0 0 1-.196.422.8.8 0 0 1-.334.252 1.298 1.298 0 0 1-.483.082H.79V12.57Zm7.422.483a1.732 1.732 0 0 0-.103.633v.495c0 .246.034.455.103.627a.834.834 0 0 0 .298.393.845.845 0 0 0 .478.131.868.868 0 0 0 .401-.088.699.699 0 0 0 .273-.248.8.8 0 0 0 .117-.364h.765v.076a1.268 1.268 0 0 1-.226.674c-.137.194-.32.345-.55.454a1.81 1.81 0 0 1-.786.164c-.36 0-.664-.072-.914-.216a1.424 1.424 0 0 1-.571-.627c-.13-.272-.194-.597-.194-.976v-.498c0-.379.066-.705.197-.978.13-.274.321-.485.571-.633.252-.149.556-.223.911-.223.219 0 .421.032.607.097.187.062.35.153.489.272a1.326 1.326 0 0 1 .466.964v.073H9.78a.85.85 0 0 0-.12-.38.7.7 0 0 0-.273-.261.802.802 0 0 0-.398-.097.814.814 0 0 0-.475.138.868.868 0 0 0-.301.398Z"/>
-              </svg>
-            {% else %}
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark" viewBox="0 0 16 16">
-                  <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
-              </svg>
-            {% endif %}
-            {{ post.get_file_name }}
-          </a>
-        {% endif %}
-
-        <hr>
-    </div>
+  <hr>
+</div>
 
 
-    <div id="comment-area">
-        <!-- Comments Form -->
-        <div class="card my-4">
-          <h5 class="card-header">Leave a Comment:</h5>
-          <div class="card-body">
-            {% if user.is_authenticated %}
-            <style>
-                label.form-label { display: none; }
-                #id_content { height: 5em; }
-            </style>
-            <form id="comment-form" method="POST" action="{{ post.get_absolute_url }}new_comment/" style="textarea.rows:4;">
-              {% csrf_token %}
-              <div class="form-group">
-                  {{ comment_form | crispy  }}
-              </div>
-              <button type="submit" class="btn btn-primary float-end">Submit</button>
-            </form>
-            {% else %}
-              <a role="button" class="btn btn-outline-dark btn-block btn-sm col-12" href="#" data-bs-toggle="modal" data-bs-target="#loginModal
+<div id="comment-area">
+  <!-- Comments Form -->
+  <div class="card my-4">
+    <h5 class="card-header">Leave a Comment:</h5>
+    <div class="card-body">
+      {% if user.is_authenticated %}
+      <style>
+        label.form-label {
+          display: none;
+        }
+
+        #id_content {
+          height: 5em;
+        }
+      </style>
+      <form id="comment-form" method="POST" action="{{ post.get_absolute_url }}new_comment/" style="textarea.rows:4;">
+        {% csrf_token %}
+        <div class="form-group">
+          {{ comment_form | crispy }}
+        </div>
+        <button type="submit" class="btn btn-primary float-end">Submit</button>
+      </form>
+      {% else %}
+      <a role="button" class="btn btn-outline-dark btn-block btn-sm col-12" href="#" data-bs-toggle="modal"
+        data-bs-target="#loginModal
 ">
-                  Log in and leave a comment
+        Log in and leave a comment
+      </a>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if post.comment_set.exists %}
+  {% for comment in post.comment_set.iterator %}
+  <!-- Single Comment -->
+  <div class="d-flex media mb-4 gap-3 col-12" id="comment-{{ comment.pk }}">
+    <img class="rounded-circle" src="{{ comment.get_avatar_url }}" alt="{{ comment.author }}" width="60px"
+      height="60px">
+    <div class="media-body col-10">
+      {% if user.is_authenticated and comment.author == user %}
+      <div class="float-end">
+        <a role="button" class="btn btn-sm btn-info" id="comment-{{ comment.pk }}-update-btn"
+          href="/blog/update_comment/{{ comment.pk }}/">
+          edit
+        </a>
+        <a role="button" href="#" id="comment-{{ comment.pk }}-delete-modal-btn" class="btn btn-sm btn-danger"
+          data-bs-toggle="modal" data-bs-target="#deleteCommentModal-{{ comment.pk }}">
+          delete
+        </a>
+      </div>
+      <!-- Modal -->
+      <div class="modal fade" id="deleteCommentModal-{{ comment.pk }}" tabindex="-1" role="dialog"
+        aria-labelledby="deleteCommentModalLabel" aria-hidden="true">
+        <div class="modal-dialog" rols="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteModalLabel">Are You Shure?</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <del class="text-break">{{ comment | linebreaksbr }}</del>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                Cancel
+              </button>
+              <a role="button" class="btn btn-danger" href="/blog/delete_comment/{{ comment.pk }}/">
+                Delete
               </a>
-            {% endif %}
+            </div>
           </div>
         </div>
-
-        {% if post.comment_set.exists %}
-          {% for comment in post.comment_set.iterator %}
-            <!-- Single Comment -->
-            <div class="d-flex media mb-4 gap-3 col-12" id="comment-{{ comment.pk }}">
-              <img class="rounded-circle" src="{{ comment.get_avatar_url }}" alt="{{ comment.author }}" width="60px" height="60px">
-              <div class="media-body col-10">
-                {% if user.is_authenticated and comment.author == user %}
-                <div class="float-end">
-                    <a role="button"
-                       class="btn btn-sm btn-info"
-                       id="comment-{{ comment.pk }}-update-btn"
-                       href="/blog/update_comment/{{ comment.pk }}/">
-                        edit
-                    </a>
-                    <a role="button"
-                       href="#"
-                       id="comment-{{ comment.pk }}-delete-modal-btn"
-                       class="btn btn-sm btn-danger"
-                       data-bs-toggle="modal" data-bs-target="#deleteCommentModal-{{ comment.pk }}">
-                        delete
-                    </a>
-                </div>
-                <!-- Modal -->
-                <div class="modal fade" id="deleteCommentModal-{{ comment.pk }}" tabindex="-1" role="dialog" aria-labelledby="deleteCommentModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" rols="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="deleteModalLabel">Are You Shure?</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <del class="text-break">{{ comment | linebreaksbr }}</del>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                    Cancel
-                                </button>
-                                <a role="button" class="btn btn-danger" href="/blog/delete_comment/{{ comment.pk }}/">
-                                    Delete
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-                <h5 class="mt-0">{{ comment.author.username }} &nbsp&nbsp;<small class="text-muted">{{ comment.created_at }}</small></h5>
-                <p class="text-break">{{ comment.content | linebreaksbr }}</p>
-                {% if comment.created_at != comment.modified_at %}
-                  <p class="text-muted float-end"><small>Updated: {{ comment.modified_at }}</small></p>
-                {% endif %}
-              </div>
-            </div>
-          {% endfor %}
-        {% endif %}
+      </div>
+      {% endif %}
+      <h5 class="mt-0">{{ comment.author.username }} &nbsp&nbsp;<small class="text-muted">{{ comment.created_at
+          }}</small></h5>
+      <p class="text-break">{{ comment.content | linebreaksbr }}</p>
+      {% if comment.created_at != comment.modified_at %}
+      <p class="text-muted float-end"><small>Updated: {{ comment.modified_at }}</small></p>
+      {% endif %}
     </div>
-    <hr/>
+  </div>
+  {% endfor %}
+  {% endif %}
+</div>
+<hr />
 
 {% endblock %}
-
