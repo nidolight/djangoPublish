@@ -169,6 +169,7 @@ MARKDOWNX_MARKDOWN_EXTENSION_CONFIGS = {
         'linenums': True,
         'use_pygments': True,
         'noclasses': True,
+        'pygments_style': 'tango',
     }
 }
 # Default primary key field type
